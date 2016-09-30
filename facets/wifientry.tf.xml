@@ -1,0 +1,25 @@
+<AppFacet Name="SSIDEntryFacet">
+	<String name="EmailID" KnownBy="EmailAction" />
+	<String name="WifiSSID" KnownBy="WifiSetupAction" />
+	<String name="WifiPassword" />
+	<Action Name="EmailAction" Documentation="Save the Email Address onto the File">
+		<Workflow Limit="1" Live="1" Timeout="0">
+			<Task Name="SaveEmail" While="true">
+				<Event Name="Argument" As="ActionArgument" />
+				<Command>sed -E "s/(&lt;Username&gt;)(.*)(&lt;\/Username&gt;)/\1[%:Event.Argument.EmailID.Value:%]\3/"-i .tql.ini</Command>
+				<Invoke Name="ExecuteCommand" waitFor="Argument" execute="[:Command:]">
+				</Invoke>
+			</Task>
+		</Workflow>
+	</Action>	
+	<Action Name="WifiSetupAction" Documentation="Setup the Wifi">
+		<Workflow Limit="1" Live="1" Timeout="0">
+			<Task Name="SetWifi" While="true">
+				<Event Name="Argument" As="ActionArgument" />
+				<WifiCommand>./scripts/setup.sh add [%:Event.Argument.WifiSSID.Value:%] [%:Event.Argument.WifiPassword.Value:%]</WifiCommand>
+				<Invoke Name="ExecuteWifiCommand" waitFor="Argument" execute="[:WifiCommand:]">
+				</Invoke>
+			</Task>
+		</Workflow>
+	</Action>	
+</AppFacet>

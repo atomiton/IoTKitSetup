@@ -1,0 +1,9 @@
+<Macro Name="PiReboot">
+      <Argument>
+      </Argument>
+<Result>
+<ExecuteCommand>
+			<CommandString>scripts/setup.sh reboot</CommandString>
+		</ExecuteCommand>
+</Result>
+</Macro>

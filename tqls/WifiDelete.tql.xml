@@ -1,0 +1,12 @@
+<Query>
+	<DeleteAll>
+		<SSIDDeleteModel>
+			<deleteID ne="" />
+		</SSIDDeleteModel>
+	</DeleteAll>
+	<Create>
+		<SSIDDeleteModel>
+			<WifiSSID></WifiSSID>
+		</SSIDDeleteModel>
+	</Create>
+</Query>

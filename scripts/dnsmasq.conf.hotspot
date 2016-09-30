@@ -1,0 +1,7 @@
+interface=wlan0
+listen-address=1.1.1.1
+bind-interfaces
+server=8.8.8.8
+domain-needed
+bogus-priv
+dhcp-range=1.1.1.50,1.1.1.150,12h

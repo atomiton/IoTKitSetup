@@ -1,0 +1,67 @@
+<Macro Name="ExecuteCommand">
+ 
+      <Argument>
+ 
+        <CommandString></CommandString>
+ 
+      </Argument>
+ 
+      <Result>
+ 
+        <Log Message="Execute Command string =================== [:$Macro.Argument.CommandString:]"/>
+ 
+        <DoRequest target="[:RuntimeParams.WdlFacetIDName:]" Disable="CMD_SERVER">
+ 
+          <Process>
+ 
+            <Message>
+ 
+              <Value>
+ 
+                <Workflow name="ExecuteCommand">
+ 
+                  <Return name="ExecuteCommandOutput" value="ExecuteTask.CommandResponse"/>
+ 
+                  <Task name="ExecuteTask">
+ 
+                    <Invoke name="ExecuteCommand" execute="[:$Macro.Argument.CommandString:]"/>
+ 
+                    <Log Message="Execute Command Response =================== [:Invoke.ExecuteCommand:]"/>
+ 
+                    <Output name="CommandResponse">
+ 
+                      <Value>
+ 
+                        <Include>[:Invoke.ExecuteCommand:]</Include>
+ 
+                      </Value>
+ 
+                    </Output>
+ 
+                  </Task>
+ 
+                </Workflow>
+ 
+              </Value>
+ 
+            </Message>
+ 
+          </Process>
+ 
+        </DoRequest>
+ 
+        <SetResponseData key="Message.Value.Output">
+ 
+          <Value>
+ 
+            <Include>[:$Response.Message.Value.ExecuteCommandOutput.Message.Value:]</Include>
+ 
+          </Value>
+ 
+        </SetResponseData>
+ 
+        <DelResponseData key="Message.Value.ExecuteCommandOutput"/>
+ 
+      </Result>
+ 
+    </Macro>

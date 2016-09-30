@@ -1,0 +1,13 @@
+<AppFacet Name="SSIDDeleteFacet">
+	<String name="WifiSSID" KnownBy="WifiDeleteAction" />	
+	<Action Name="WifiDeleteAction" Documentation="Remove the Wifi entry">
+		<Workflow Limit="1" Live="1" Timeout="0">
+			<Task Name="deleteWifi" While="true">
+				<Event Name="Argument" As="ActionArgument" />
+				<WifiDeleteCommand>./scripts/setup.sh delete [%:Event.Argument.WifiSSID.Value:%] </WifiDeleteCommand>
+				<Invoke Name="ExecuteWifiDeleteCommand" waitFor="Argument" execute="[:WifiDeleteCommand:]">
+				</Invoke>
+			</Task>
+		</Workflow>
+	</Action>	
+</AppFacet>

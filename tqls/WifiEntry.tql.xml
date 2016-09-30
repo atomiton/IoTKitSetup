@@ -1,0 +1,14 @@
+<Query>
+	<DeleteAll>
+		<SSIDEntryModel>
+			<entryID ne="" />
+		</SSIDEntryModel>
+	</DeleteAll>
+	<Create>
+		<SSIDEntryModel>
+			<EmailID></EmailID>
+			<WifiSSID></WifiSSID>
+			<WifiPassword></WifiPassword>
+		</SSIDEntryModel>
+	</Create>
+</Query>

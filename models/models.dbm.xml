@@ -1,0 +1,18 @@
+<Namespace Name="Atomiton">
+	<Domain Name="WifiSetup">
+		<AppFacet>
+			<Include>[:RuntimeParams.ThingFacetLocation:]wifientry.tf.xml
+			</Include>
+		</AppFacet>
+		<AppModel name="SSIDEntryModel" combines="SSIDEntryFacet">
+			<Sid name="entryID" />
+		</AppModel>
+		<AppFacet>
+			<Include>[:RuntimeParams.ThingFacetLocation:]wifidelete.tf.xml
+			</Include>
+		</AppFacet>
+		<AppModel name="SSIDDeleteModel" combines="SSIDDeleteFacet">
+			<Sid name="deleteID" />
+		</AppModel>
+	</Domain>
+</Namespace>

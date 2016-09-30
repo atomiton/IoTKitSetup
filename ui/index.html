@@ -1,0 +1,116 @@
+ <!DOCTYPE html>
+<html lang="en-US" ng-app="iotKitUI">
+<link rel="stylesheet" href="vendor/bootstrap.min.css">
+<link rel="stylesheet" href="vendor/ngToast.min.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/jquery.min.js"></script>
+<script src="vendor/angular.min.js"></script>
+<script src="vendor/xml2json.min.js"></script>
+<script src="vendor/bootstrap.min.js"></script>
+
+<!-- <script src="angular-animate.min.js"></script> -->
+<script src="vendor/angular-sanitize.js"></script>
+<script src="vendor/ngToast.min.js"></script>
+<script src="js/app.js"></script>
+<body ng-controller="kitSetupController">
+	<toast></toast>
+	<div>
+	  <div class="project-setup-outer">
+	  	<div class="project-setup-header text-center">
+	  		<h2>TQL IoT KIT SETUP</h2>
+	  	</div>
+	  	<div class="clr"></div>
+	  	<div class="project-setup-form">
+	  		<fieldset>
+	  			<legend>CONFIGURATION</legend>
+		  		<div class="row">
+		  			<div class="col-md-6">
+		  				<h3>SAVED NETWORKS</h3>
+		  				<div>
+		  					<ul>
+		  						<li ng-repeat="SSID in SSIDList" ng-mouseenter="showDeleteOption=true; setSSIDToDelete(SSID)" ng-mouseleave="showDeleteOption=false">
+		  							{{SSID}}
+		  							<span class="pull-right" ng-show="showDeleteOption" data-toggle="modal" data-target="#confirmDeleteModal">X</span>
+		  						</li>
+		  					</ul>
+		  				</div>
+		  			</div>
+		  			<div class="col-md-6">
+		  				
+		  				<form name="setupForm" ng-submit="saveNewNetwork()" novalidate>
+				  		<h3>CREATE NEW NETWORK</h3>
+					        <!-- EMAIL -->
+					        <div class="form-group" ng-class="{ 'has-error' : setupForm.email.$invalid && !setupForm.email.$pristine }">
+					            <input type="text" placeholder="EMAIL" name="email" class="form-control" ng-model="setup.email" required ng-pattern='/^[a-zA-Z0-9"]*([a-zA-Z0-9_\-+"])+([\.][a-zA-Z0-9_"]+)*\@((([a-zA-Z0-9]+([a-zA-Z0-9\-])*\.){1,2})(com|[a-zA-Z]{2}|net|org|edu)|(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9]))$/'>
+					            <p ng-show="setupForm.email.$invalid && !setupForm.email.$pristine" class="help-block">Please enter a valid email address.</p>
+					        </div>
+					      
+					        <!-- WIFI NAME -->
+					        <div class="form-group" ng-class="{ 'has-error' : setupForm.wifiName.$invalid && !setupForm.wifiName.$pristine }">
+					            <input type="text" placeholder="WIFI NAME" name="wifiName" class="form-control" ng-model="setup.wifiName" required>
+					            <p ng-show="setupForm.wifiName.$invalid && !setupForm.wifiName.$pristine" class="help-block">Wifi name is required.</p>
+					        </div>
+
+					        <!-- WIFI PASSWORD -->
+					        <div class="form-group" ng-class="{ 'has-error' : setupForm.wifiPassword.$invalid && !setupForm.wifiPassword.$pristine }">
+					            <input type="password" placeholder="WIFI PASSWORD" name="wifiPassword" class="form-control" ng-model="setup.wifiPassword" required>
+					            <p ng-show="setupForm.wifiPassword.$invalid && !setupForm.wifiPassword.$pristine" class="help-block">Wifi password is required.</p>
+					        </div>
+					        
+					        <button type="submit" class="pull-right" ng-disabled="setupForm.$invalid">SAVE</button>
+					        
+					    </form>
+					    <div class="clr"></div>
+		  			</div>
+		  		</div>
+	  		</fieldset>
+	  		<div class="row text-center">
+	  			<form novalidate>
+		  				<button style="padding: 0 50px; margin-top: 20px;" data-toggle="modal" data-target="#confirmRebootModal">REBOOT RASPBERRY PI</button>
+		  			</form>
+	  		</div>
+	  		<div class="row text-center" style="margin-top: 20px;">
+	  			<a ng-href="{{studioLink}}" style="{{anchorStyle}}">TQL Studio</a> | <a ng-href="{{websiteLink}}" style="{{anchorStyle}}">Atomiton</a>
+	  		</div>
+	  	</div>
+	  	<div class="clr"></div>
+	  </div>
+	</div>
+
+	<div id="confirmDeleteModal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Delete Network "{{SSIDToDelete}}"?</h4>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="deleteNetwork()">Delete</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	      </div>
+	    </div>
+
+	  </div>
+	</div>
+
+	<div id="confirmRebootModal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Reboot Raspberry PI?</h4>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="rebootPI()">Reboot</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	      </div>
+	    </div>
+
+	  </div>
+	</div>
+</body>
+</html> 

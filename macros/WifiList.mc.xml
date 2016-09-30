@@ -1,0 +1,9 @@
+<Macro Name="WifiList">
+      <Argument>
+      </Argument>
+<Result>
+<ExecuteCommand>
+			<CommandString>scripts/setup.sh list</CommandString>
+		</ExecuteCommand>
+</Result>
+</Macro>
